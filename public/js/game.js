@@ -132,23 +132,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         dropCounter = 0;
     }
 
-    let dropCounter = 0;
-    let dropInterval = 1000; // 1 second
-
-    let lastTime = 0;
-    function update(time = 0) {
-        const deltaTime = time - lastTime;
-        lastTime = time;
-
-        dropCounter += deltaTime;
-        if (dropCounter > dropInterval) {
-            playerDrop();
-        }
-
-        draw();
-        requestAnimationFrame(update);
-    }
-
     function playerReset() {
         const pieces = 'ILJOTSZ';
         player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
@@ -189,6 +172,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     function boardSweep() {
+        let linesCleared = 0;
         outer: for (let y = board.length - 1; y > 0; --y) {
             for (let x = 0; x < board[y].length; ++x) {
                 if (board[y][x] === 0) {
@@ -199,8 +183,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             board.unshift(row);
             ++y;
 
-            player.score += rowCount * 10;
-            rowCount *= 2;
+            linesCleared++;
+
+            if (linesCleared > 0) {
+                player.score += linesCleared * 10;
+                updateScore();
+            }
         }
     }
 
@@ -272,6 +260,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
         updateScore();
         update();
     }
+
+    let dropCounter = 0;
+    let dropInterval = 1000; // 1 second
+    let lastTime = 0;
 
     function update(time = 0) {
         if (!gameRunning) return;
