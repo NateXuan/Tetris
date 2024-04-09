@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const canvas = document.getElementById('tetris');
     const context = canvas.getContext('2d');
     const grid = 20;
-    const rows = 25; // row
-    const cols = 20; // column
+    const rows = 25;
+    const cols = 20;
     let rowCount = 1;
     let gameRunning = false;
     let board = Array.from({ length: rows }, () => Array(cols).fill(0));
